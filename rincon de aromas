@@ -1,0 +1,66 @@
+const express = require('express');
+const cors = require('cors');
+const http = require('http');
+const { Server } = require('socket.io');
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
+
+app.use(cors());
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('Backend de Rincón de Aromas funcionando ✅');
+});
+
+io.on('connection', (socket) => {
+  console.log('🟢 Usuario conectado');
+  socket.on('mensaje', (msg) => {
+    io.emit('mensaje', msg);
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+{
+  "name": "rincon-de-aromas-backend",
+  "version": "1.0.0",
+  "description": "Backend de Rincón de Aromas con Socket.io",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "socket.io": "^4.7.1"
+  }
+}
+# 💬 Rincón de Aromas — Backend
+
+Servidor Node.js + Express + Socket.io para chat en tiempo real.
+
+## Cómo usar
+
+1. Subí este repo a [Render.com](https://render.com)
+2. Render lo detecta como “Node.js App”
+3. Elige “Free Plan”
+4. Render te dará una URL (ej: https://rincon-aromas-backend.onrender.com)
+5. Copiá esa URL en el frontend (`index.html`) en la línea:
+
+```js
+const socket = io('https://tu-backend-url.onrender.com');
+
+---
+
+# ✅ **PARTE 3 — DEPLOY FINAL**
+
+1. Subí **frontend a Vercel.com**
+2. Subí **backend a Render.com**
+3. Abrí tu tienda online desde el link de Vercel.
+4. Desde el celular, tocá “Agregar a pantalla de inicio” → ¡App lista! 🎉  
+
+---
+
+¿Querés que te deje los **enlaces directos a Render y Vercel** ya configurados para que solo tengas que pegar tus repos y hacer clic en “Deploy”?
